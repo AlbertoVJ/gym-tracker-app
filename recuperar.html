@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111318">
+  <title>Actualizar Gym Tracker</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#0c0e12;color:#f5f6f8;font:16px/1.6 system-ui,sans-serif;padding:28px;min-height:100vh;display:grid;place-items:center}main{max-width:440px;padding:28px;border:1px solid #343a42;border-radius:24px;background:#151920}h1{font-size:25px;line-height:1.2}p{color:#b8c0cb}button,a{display:block;text-align:center;width:100%;background:#f2f4f7;color:#111318;border:0;border-radius:12px;padding:14px;font:inherit;font-weight:700;text-decoration:none;margin-top:18px}button{cursor:pointer}[hidden]{display:none}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Actualizando Gym Tracker</h1>
+    <p id="status" role="status">Preparando la corrección de apertura…</p>
+    <p>Tu historial y el entrenamiento en curso se conservan.</p>
+    <button id="retry" hidden onclick="location.reload()">Volver a intentar</button>
+    <a id="open" href="./" hidden>Abrir Gym Tracker</a>
+  </main>
+  <script>
+    (async () => {
+      const status = document.querySelector('#status');
+      try {
+        if (!('serviceWorker' in navigator)) throw new Error('Abre este enlace en Chrome con conexión a internet.');
+        const registration = await navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' });
+        await registration.update();
+        const worker = registration.installing || registration.waiting;
+        if (worker) await new Promise((resolve, reject) => {
+          const timeout = setTimeout(() => { worker.removeEventListener('statechange', check); reject(new Error('La descarga está tardando. Revisa tu conexión e inténtalo de nuevo.')); }, 25000);
+          function check() {
+            if (worker.state === 'installed') worker.postMessage({ type: 'ACTIVATE_UPDATE' });
+            if (worker.state === 'activated' || worker.state === 'redundant') {
+              clearTimeout(timeout); worker.removeEventListener('statechange', check);
+              worker.state === 'activated' ? resolve() : reject(new Error('No se pudo descargar la actualización. Inténtalo otra vez con internet.'));
+            }
+          }
+          worker.addEventListener('statechange', check); check();
+        });
+        await navigator.serviceWorker.ready;
+        status.textContent = 'Actualización lista. Abriendo tu app…';
+        document.querySelector('#open').hidden = false;
+        location.replace('./');
+      } catch (error) {
+        status.textContent = error.message || 'No se pudo actualizar. Inténtalo con internet.';
+        document.querySelector('#retry').hidden = false;
+      }
+    })();
+  </script>
+</body>
+</html>

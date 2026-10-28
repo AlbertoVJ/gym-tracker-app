@@ -1,0 +1,27 @@
+{
+  "name": "Gym Tracker Personal",
+  "short_name": "Gym Tracker",
+  "description": "Registro de entrenamiento personal, offline y sin anuncios.",
+  "start_url": "./",
+  "id": "./",
+  "scope": "./",
+  "lang": "es-MX",
+  "display": "standalone",
+  "background_color": "#111318",
+  "theme_color": "#111318",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "oxy-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "oxy-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

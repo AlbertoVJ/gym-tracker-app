@@ -1,0 +1,6 @@
+Local plate reader components:
+Tesseract.js 7.0.0 — https://github.com/naptha/tesseract.js — Apache-2.0
+Tesseract.js-core — https://github.com/naptha/tesseract.js-core — Apache-2.0
+English fast language data — https://github.com/tesseract-ocr/tessdata_fast — Apache-2.0
+Downloaded from the upstream eng.traineddata file on 2026-10-01 UTC.
+Only the LSTM engine variants are used. See bundled license texts.
